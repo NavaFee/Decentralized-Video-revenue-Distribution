@@ -1,6 +1,5 @@
 import { IncomingForm } from "formidable"
 import fs from "fs"
-import { hashRecords}
 
 export const config = {
     api: {
