@@ -21,4 +21,6 @@ contract VIDToken is ERC20 {
         require(msg.sender == admin, "Only the admin can call this function");
         _burn(account, value);
     }
+
+    
 }
