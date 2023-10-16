@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract ERC721PlatformManage is ERC721 {
-    string public TOKEN_URI;
+
+contract ERC721PlatformManage is ERC721URIStorage {
+   
     address admin;
     uint256 private s_tokenCounter;
     uint256 tokenId;
@@ -12,13 +14,12 @@ contract ERC721PlatformManage is ERC721 {
     address[] internal platformAddress;
 
     constructor(
-        string memory _tokenUri,
         string memory _name,
         string memory _symbol,
         address _admin
+        
     ) ERC721(_name, _symbol) {
         tokenId = 0;
-        TOKEN_URI = _tokenUri;
         admin = _admin;
     }
 
@@ -45,21 +46,17 @@ contract ERC721PlatformManage is ERC721 {
         _;
     }
 
-    function mintNft(address platform) public returns (uint256) {
+    function mintNft(address platform,string memory _uri) public returns (uint256) {
         _safeMint(msg.sender, tokenId);
         _owners[tokenId] = msg.sender;
-        tokenId++;
         hostingPlatformWithToken(tokenId, platform);
-        emit CreatNFTRecord(msg.sender, tokenId, platform);
+       _setTokenURI(tokenId, _uri);
+       tokenId++;
+       emit CreatNFTRecord(msg.sender, tokenId, platform);
         return tokenId;
     }
 
-    function tokenURI(
-        uint256 /*tokenId*/
-    ) public view override returns (string memory) {
-        // require (_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-        return TOKEN_URI;
-    }
+  
 
     function getTokenCounter() public view returns (uint256) {
         return s_tokenCounter;

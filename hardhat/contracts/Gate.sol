@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.0) (token/ERC721/extensions/ERC721URIStorage.sol)
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.20;
 
 import "./ERC721PlatformManage.sol";
 import "./VIDToken.sol";
 
+
+
 contract Gate {
-    //分配比例 ，分别是作者0.4，存放平台0.4 播放平台0.2
+    //分配比例 ，初始比例分别是作者0.4，存放平台0.4 播放平台0.2
     uint256[3] disPercentage = [40, 40, 20];
     VIDToken public tokenContract;
     ERC721PlatformManage public marketContract;
@@ -59,4 +61,13 @@ contract Gate {
         tokenContract.mint(hostingContributorAddress, hostingContributorReward);
         tokenContract.mint(playPlatform, storageContributorReward);
     }
+    
+    function changeDistributionRate(uint256[3] memory _disPercentage) public onlyAdmin {
+      require(_disPercentage.length == 3, "Invalid array length");
+
+      disPercentage = _disPercentage;
+    }
+
+    
+    
 }
