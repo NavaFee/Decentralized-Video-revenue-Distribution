@@ -1,1 +1,1 @@
-# CUIT-Squad-ETH-Hangzhou
+# Decentralized-Video-revenue-Distribution
