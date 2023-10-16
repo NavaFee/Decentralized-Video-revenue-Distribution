@@ -1,5 +1,7 @@
 const fs = require("fs")
 import path from "path"
+import distributionCoin from "./onblockchain/distributionCoin"
+import batchMintCoin from "./onblockchain/batchMintCoin"
 
 export function skimVideotoRecord(id, platform) {
     const record = { videoId: id, platForm: platform }
@@ -65,6 +67,14 @@ export async function mergeRecords() {
             }
         })
     })
+}
+
+async function uploadRecordToBlockchain(_tokenids, _playCounts, _playPlatforms) {
+    await batchMintCoin(_tokenids, _playCounts, _playPlatforms)
+}
+
+async function uploadMintRecordToBlockchain(_tokenids, _playPlatform, _coinNumber) {
+    await distributionCoin(_tokenids, _playPlatforms, _coinNumber)
 }
 
 export function hashRecords(hash, id, platform) {
