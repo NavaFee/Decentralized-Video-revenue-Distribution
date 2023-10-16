@@ -1,0 +1,38 @@
+{
+    "name": "nextjs",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@apollo/client": "^3.8.4",
+        "@walletconnect/ethereum-provider": "^2.10.2",
+        "@walletconnect/modal": "^2.6.2",
+        "formidable": "^3.5.1",
+        "fs": "^0.0.1-security",
+        "graphql": "^16.8.1",
+        "moralis": "^2.23.1",
+        "moralis-v1": "^1.13.0",
+        "multer": "^1.4.5-lts.1",
+        "next": "13.4.19",
+        "next-connect": "^1.0.0",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "react-moralis": "^1.4.2",
+        "stream": "^0.0.2",
+        "uuid": "^9.0.1",
+        "web3uikit": "^1.0.4"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.16",
+        "eslint": "8.49.0",
+        "eslint-config-next": "13.4.19",
+        "ethers": "^6.7.1",
+        "postcss": "^8.4.30",
+        "tailwindcss": "^3.3.3"
+    }
+}
