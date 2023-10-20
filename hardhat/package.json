@@ -23,7 +23,6 @@
         "typechain": "^8.1.0"
     },
     "dependencies": {
-        "@aave/protocol-v2": "^1.0.1",
         "dotenv": "^16.3.1"
     },
     "scripts": {

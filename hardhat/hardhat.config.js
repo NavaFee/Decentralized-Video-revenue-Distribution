@@ -11,6 +11,7 @@ const SCROLLSCAN_API_KEY = process.env.SCROLLSCAN_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL
+const ADVERTISER_PRIVATE_KEY = process.env.ADVERTISER_PRIVATE_KEY
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
     defaultNetwork: "hardhat",
@@ -20,7 +21,7 @@ module.exports = {
         },
         scrollSepolia: {
             url: "https://sepolia-rpc.scroll.io/" || "",
-            accounts: [SEPOLIA_PRIVATE_KEY],
+            accounts: [SEPOLIA_PRIVATE_KEY, ADVERTISER_PRIVATE_KEY],
             chainId: 534351,
         },
         sepolia: {
@@ -79,7 +80,7 @@ module.exports = {
         },
         advertiser: {
             default: 2,
-            534351: 0,
+            534351: 1,
         },
         platformer: {
             default: 3,

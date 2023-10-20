@@ -4,9 +4,11 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 error VideoNFT__NotOwner();
+error VideoNFT__NotAdmin();
 
 contract VideoNFT is ERC721 {
     using Strings for uint256;
+    address private immutable i_admin;
     uint256 private s_tokenCounter;
 
     mapping(uint256 tokenId => string) private TOKEN_URI;
@@ -14,12 +16,19 @@ contract VideoNFT is ERC721 {
 
     event VNFTMinted(uint256 tokenId);
 
-    constructor() ERC721("VideoNFT", "VNFT") {
+    constructor(address admin) ERC721("VideoNFT", "VNFT") {
         s_tokenCounter = 0;
+        i_admin = admin;
     }
 
-    function uploadVideo(string memory token_uri) external returns (uint256) {
-        _safeMint(msg.sender, s_tokenCounter);
+    function uploadVideo(
+        string memory token_uri,
+        address to
+    ) external returns (uint256) {
+        if (msg.sender != i_admin) {
+            revert VideoNFT__NotAdmin();
+        }
+        _safeMint(to, s_tokenCounter);
         setTokenUri(token_uri, s_tokenCounter);
         emit VNFTMinted(s_tokenCounter);
         s_tokenCounter++;

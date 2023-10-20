@@ -12,7 +12,7 @@ contract VIDToken is ERC20 {
         i_admin = admin;
     }
 
-    function playVedio(address account, uint256 value) external {
+    function playVideo(address account, uint256 value) external {
         if (msg.sender != i_admin) {
             revert VIDToken__NotAdmin();
         }

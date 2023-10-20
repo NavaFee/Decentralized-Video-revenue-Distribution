@@ -12,7 +12,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
     log("----------------------------------------------------")
 
-    const args = []
+    const args = [deployer]
     const videoNft = await deploy("VideoNFT", {
         from: deployer,
         args: args,

@@ -5,13 +5,13 @@ import Link from "next/link"
 import { ethers } from "ethers"
 import networkMapping from "../constants/networkMapping.json"
 import vidToken_abi from "../constants/VIDToken.json"
-import account from "../constants/account.json"
+import accounts from "../constants/account.json"
 import React, { useContext } from "react"
 import { SharedStateContext } from "../components/SharedStateContext"
 
-const VIDToken_addr = networkMapping["31337"].VIDToken[0]
-const TESTNET_URL = "http://localhost:8545"
-
+const VIDToken_addr = networkMapping["534351"].VIDToken[0]
+const TESTNET_URL = "https://sepolia-rpc.scroll.io/"
+const wallet1 = process.env.NEXT_PUBLIC_ADMIN_PRIVATE_KEY
 export default function VideoPage() {
     const {
         userbalance,
@@ -46,6 +46,10 @@ export default function VideoPage() {
         }
     }, [])
 
+    useEffect(() => {
+        play()
+    }, [])
+
     const handleAdClick = async (index) => {
         const videoIdFromAd = adVideos[index].split("/").pop().split(".")[0]
         setVideoId(videoIdFromAd)
@@ -53,22 +57,61 @@ export default function VideoPage() {
         const adPagePath = `/ad/${adVideos[index].split("/").pop().split(".")[0]}`
         router.push(adPagePath)
         const provider = new ethers.JsonRpcProvider(TESTNET_URL)
-        const accounts = await provider.getSigner()
-        const admin = account["account"][0]
-        const platform = account["account"][3]
-        const user_address = account["account"][1]
-        const advertiser = account["account"][2]
+
+        const wallet_admin = new ethers.Wallet(wallet1, provider)
+        const admin = accounts["scroll"][0]
+        const platform = accounts["scroll"][1]
+        const advertiser = accounts["scroll"][2]
+        const user1_address = accounts["scroll"][3]
+        const user2_address = accounts["scroll"][4]
+        const user3_address = accounts["scroll"][5]
         console.log("platform", platform)
-        console.log("user_account", user_address)
+        console.log("user_account", user1_address)
 
-        const vidToken = new ethers.BaseContract(VIDToken_addr, vidToken_abi, accounts)
+        const vidToken = new ethers.Contract(VIDToken_addr, vidToken_abi, wallet_admin)
         console.log("vidToken", vidToken)
-        await vidToken.connect(user_address)
 
-        const tx3 = await vidToken.burn(advertiser, ethers.parseEther("100"))
+        const tx3 = await vidToken.clickAD(advertiser, ethers.parseEther("1000"))
+
         const advertiser_balance = ethers.formatEther(await vidToken.balanceOf(advertiser))
 
         setadvertiserBalance(advertiser_balance.toString())
+    }
+
+    async function play() {
+        const tokenID = router.query.id
+        console.log("videoId", tokenID)
+        const provider = new ethers.JsonRpcProvider(TESTNET_URL)
+        const wallet_admin = new ethers.Wallet(wallet1, provider)
+        const admin = accounts["scroll"][0]
+        const platform = accounts["scroll"][1]
+        const advertiser = accounts["scroll"][2]
+        const user1_address = accounts["scroll"][3]
+        const user2_address = accounts["scroll"][4]
+        const user3_address = accounts["scroll"][5]
+        console.log("platform", platform)
+        console.log("user_account", user1_address)
+        const vidToken = new ethers.Contract(VIDToken_addr, vidToken_abi, wallet_admin)
+        console.log("vidToken", vidToken)
+        console.log("videoId", tokenID)
+        if (tokenID == "晚霞") {
+            const tx1 = await vidToken.playVideo(user1_address, ethers.parseEther("300"))
+            await tx1.wait(1)
+        }
+        if (tokenID == "草原") {
+            const tx1 = await vidToken.playVideo(user2_address, ethers.parseEther("300"))
+            await tx1.wait(1)
+        }
+        if (tokenID == "雪山") {
+            const tx1 = await vidToken.playVideo(user3_address, ethers.parseEther("300"))
+            await tx1.wait(1)
+        }
+        if (tokenID == "日落") {
+            const tx1 = await vidToken.playVideo(user1_address, ethers.parseEther("300"))
+            await tx1.wait(1)
+        }
+
+        const tx2 = await vidToken.playVideo(platform, ethers.parseEther("700"))
     }
 
     if (!videoId) {
@@ -87,10 +130,11 @@ export default function VideoPage() {
                 <source src={`/videos/${videoId}.mp4`} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
-
+            <br className="py-" />
             <br />
-            <br />
-            <div className="flex justify-center">广告</div>
+            <div className="flex justify-center" onClick={play}>
+                广告
+            </div>
 
             <div className="overflow-hidden relative w-640px top-1">
                 <img

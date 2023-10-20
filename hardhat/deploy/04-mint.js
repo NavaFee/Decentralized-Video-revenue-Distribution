@@ -8,7 +8,7 @@ module.exports = async ({ getNamedAccounts }) => {
     const vidToken = await ethers.getContract("VIDToken", deployer)
 
     const value = await ethers.parseEther("10000")
-    const mint_to_advertiser = await vidToken.playVedio(advertiser, value)
+    const mint_to_advertiser = await vidToken.playVideo(advertiser, value)
 
     console.log(
         "advertiser's balance =========",

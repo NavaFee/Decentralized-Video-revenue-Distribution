@@ -27,8 +27,8 @@ import account from "../constants/account.json"
 import { useContext } from "react"
 import { SharedStateContext } from "../components/SharedStateContext"
 
-const VIDToken_addr = networkMapping["31337"].VIDToken[0]
-const TESTNET_URL = "http://localhost:8545"
+const VIDToken_addr = networkMapping["534351"].VIDToken[0]
+const TESTNET_URL = "https://sepolia-rpc.scroll.io/"
 
 export default function HomePage({ videos }) {
     const {
@@ -41,26 +41,25 @@ export default function HomePage({ videos }) {
     } = useContext(SharedStateContext)
 
     async function handlewatchClick() {
-        const provider = new ethers.JsonRpcProvider(TESTNET_URL)
-        const accounts = await provider.getSigner()
-        const admin = account["account"][0]
-        const platform = account["account"][3]
-        const user_address = account["account"][1]
-        const advertiser = account["account"][2]
-        console.log("platform", platform)
-        console.log("user_account", user_address)
-
-        const vidToken = new ethers.BaseContract(VIDToken_addr, vidToken_abi, accounts)
-        console.log("vidToken", vidToken)
-        await vidToken.connect(user_address)
-        const tx1 = await vidToken.mint(platform, ethers.parseEther("70"))
-        const tx2 = await vidToken.mint(user_address, ethers.parseEther("30"))
-        const user_balance = ethers.formatEther(await vidToken.balanceOf(user_address))
-        const platform_balance = ethers.formatEther(await vidToken.balanceOf(platform))
-
-        setuserBalance(user_balance.toString())
-
-        setplatformBalance(platform_balance.toString())
+        // const provider = new ethers.JsonRpcProvider(TESTNET_URL)
+        // const wallet_admin = new ethers.Wallet(wallet1, provider)
+        // const admin = accounts["scroll"][0]
+        // const platform = accounts["scroll"][1]
+        // const advertiser = accounts["scroll"][2]
+        // const user1_address = accounts["scroll"][3]
+        // const user2_address = accounts["scroll"][4]
+        // const user3_address = accounts["scroll"][5]
+        // console.log("platform", platform)
+        // console.log("user_account", user1_address)
+        // const vidToken = new ethers.Contract(VIDToken_addr, vidToken_abi, wallet_admin)
+        // console.log("vidToken", vidToken)
+        // const tx1 = await vidToken.playVideo(account, ethers.parseEther("300"))
+        // await tx1.wait(1)
+        // const tx2 = await vidToken.playVideo(platform, ethers.parseEther("700"))
+        // const user_balance = ethers.formatEther(await vidToken.balanceOf(account))
+        // const platform_balance = ethers.formatEther(await vidToken.balanceOf(platform))
+        // setuserBalance(user_balance.toString())
+        // setplatformBalance(platform_balance.toString())
     }
     return (
         <div>

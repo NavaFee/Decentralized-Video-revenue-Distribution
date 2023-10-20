@@ -12,6 +12,7 @@
         "@apollo/client": "^3.8.4",
         "@walletconnect/ethereum-provider": "^2.10.2",
         "@walletconnect/modal": "^2.6.2",
+        "dotenv": "^16.3.1",
         "formidable": "^3.5.1",
         "fs": "^0.0.1-security",
         "graphql": "^16.8.1",
