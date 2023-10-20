@@ -7,20 +7,21 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deployer } = await getNamedAccounts()
 
     log("----------------------------------------------------")
-    const initialSupply = "1000000000000000000000000000"
-    const args = [initialSupply, deployer]
+
+    const args = [deployer]
+    console.log(args)
     const vidToken = await deploy("VIDToken", {
         from: deployer,
         args: args,
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
-
+    console.log(vidToken.target)
     if (
         !developmentChains.includes(network.name) &&
-        process.env.ETHERSCAN_API_KEY
+        process.env.SCROLLSCAN_API_KEY
     ) {
-        log("Verifying on Etherscan")
+        log("Verifying on Scrollscan")
 
         await verify(vidToken.address, args)
     }

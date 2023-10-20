@@ -1,26 +1,32 @@
-// SPDX-License-Identifier: GPL-3.0
-
-pragma solidity ^0.8.7;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract VIDToken is ERC20 {
-    address private admin;
+error VIDToken__NotAdmin();
 
-    constructor(uint256 initialSupply, address account) ERC20("Video", "VID") {
-        admin = account;
-        _mint(msg.sender, initialSupply);
+contract VIDToken is ERC20 {
+    address private immutable i_admin;
+
+    constructor(address admin) ERC20("Video", "VID") {
+        i_admin = admin;
     }
 
-    function mint(address account, uint256 value) external {
-        require(msg.sender == admin, "Only the admin can call this function");
+    function playVedio(address account, uint256 value) external {
+        if (msg.sender != i_admin) {
+            revert VIDToken__NotAdmin();
+        }
         _mint(account, value);
     }
 
-    function burn(address account, uint256 value) external {
-        require(msg.sender == admin, "Only the admin can call this function");
-        _burn(account, value);
+    function clickAD(address advertiser, uint256 value) external {
+        if (msg.sender != i_admin) {
+            revert VIDToken__NotAdmin();
+        }
+        _burn(advertiser, value);
     }
 
-    
+    function getAdmin() external view returns (address) {
+        return i_admin;
+    }
 }

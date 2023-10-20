@@ -19,33 +19,23 @@ async function updateAbi() {
         VIDToken.interface.formatJson()
     )
 
-    const platform = await ethers.getContract("platform")
+    const VideoNFT = await ethers.getContract("VideoNFT")
     fs.writeFileSync(
-        `${frontEndAbiLocation}platform.json`,
-        platform.interface.formatJson()
+        `${frontEndAbiLocation}VideoNFT.json`,
+        VideoNFT.interface.formatJson()
     )
-    const ERC721PlatformManage = await ethers.getContract(
-        "ERC721PlatformManage"
-    )
+    const TokenMarketplace = await ethers.getContract("TokenMarketplace")
     fs.writeFileSync(
-        `${frontEndAbiLocation}ERC721PlatformManage.json`,
-        ERC721PlatformManage.interface.formatJson()
-    )
-    const Gate = await ethers.getContract("Gate")
-    fs.writeFileSync(
-        `${frontEndAbiLocation}Gate.json`,
-        Gate.interface.formatJson()
+        `${frontEndAbiLocation}TokenMarketplace.json`,
+        TokenMarketplace.interface.formatJson()
     )
 }
 
 async function updateContractAddresses() {
     const chainId = network.config.chainId.toString()
     const VIDToken = await ethers.getContract("VIDToken")
-    const platform = await ethers.getContract("platform")
-    const ERC721PlatformManage = await ethers.getContract(
-        "ERC721PlatformManage"
-    )
-    const Gate = await ethers.getContract("Gate")
+    const VideoNFT = await ethers.getContract("VideoNFT")
+    const TokenMarketplace = await ethers.getContract("TokenMarketplace")
 
     const contractAddress = JSON.parse(
         fs.readFileSync(frontEndContractsFile, "utf8")
@@ -58,33 +48,27 @@ async function updateContractAddresses() {
         contractAddress[chainId] = { VIDToken: [VIDToken.target] }
     }
     if (chainId in contractAddress) {
-        if (!contractAddress[chainId]["platform"].includes(platform.target)) {
-            contractAddress[chainId]["platform"][0] = platform.target
+        if (!contractAddress[chainId]["VideoNFT"].includes(VideoNFT.target)) {
+            contractAddress[chainId]["VideoNFT"][0] = VideoNFT.target
         }
     } else {
-        contractAddress[chainId] = { platform: [platform.target] }
+        contractAddress[chainId] = { VideoNFT: [VideoNFT.target] }
     }
     if (chainId in contractAddress) {
         if (
-            !contractAddress[chainId]["ERC721PlatformManage"].includes(
-                ERC721PlatformManage.target
+            !contractAddress[chainId]["TokenMarketplace"].includes(
+                TokenMarketplace.target
             )
         ) {
-            contractAddress[chainId]["ERC721PlatformManage"][0] =
-                ERC721PlatformManage.target
+            contractAddress[chainId]["TokenMarketplace"][0] =
+                TokenMarketplace.target
         }
     } else {
         contractAddress[chainId] = {
-            ERC721PlatformManage: [ERC721PlatformManage.target],
+            TokenMarketplace: [TokenMarketplace.target],
         }
     }
-    if (chainId in contractAddress) {
-        if (!contractAddress[chainId]["Gate"].includes(Gate.target)) {
-            contractAddress[chainId]["Gate"][0] = Gate.target
-        }
-    } else {
-        contractAddress[chainId] = { Gate: [Gate.target] }
-    }
+
     fs.writeFileSync(frontEndContractsFile, JSON.stringify(contractAddress))
 }
 

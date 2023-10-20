@@ -7,14 +7,13 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
 
-    // get the IPFS hashes of our images
-    const tokenUri =
-        "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json"
+    // const tokenUri =
+    //     "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json"
 
     log("----------------------------------------------------")
 
-    const args = [tokenUri, "Vedio NFT", "VNFT", deployer]
-    const erc721PlatformManage = await deploy("ERC721PlatformManage", {
+    const args = []
+    const videoNft = await deploy("VideoNFT", {
         from: deployer,
         args: args,
         log: true,
@@ -24,11 +23,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log("----------------------------------------------------")
     if (
         !developmentChains.includes(network.name) &&
-        process.env.ETHERSCAN_API_KEY
+        process.env.SCROLLSCAN_API_KEY
     ) {
-        log("Verifying on Etherscan")
+        log("Verifying on Scrollscan")
 
-        await verify(erc721PlatformManage.address, args)
+        await verify(videoNft.address, args)
     }
     log("------------------------------------")
 }

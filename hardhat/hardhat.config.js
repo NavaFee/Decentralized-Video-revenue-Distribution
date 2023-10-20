@@ -5,9 +5,9 @@ require("hardhat-deploy")
 require("solidity-coverage")
 require("@nomiclabs/hardhat-ethers")
 
-
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
 const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY
+const SCROLLSCAN_API_KEY = process.env.SCROLLSCAN_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const MAINNET_RPC_URL = process.env.MAINNET_RPC_URL
@@ -17,7 +17,11 @@ module.exports = {
     networks: {
         hardhat: {
             chainId: 31337,
-            
+        },
+        scrollSepolia: {
+            url: "https://sepolia-rpc.scroll.io/" || "",
+            accounts: [SEPOLIA_PRIVATE_KEY],
+            chainId: 534351,
         },
         sepolia: {
             url: SEPOLIA_RPC_URL,
@@ -32,13 +36,7 @@ module.exports = {
         },
     },
     solidity: {
-        compilers: [
-            { version: "0.8.7" },
-            { version: "0.6.6" },
-            { version: "0.4.19" },
-            { version: "0.6.12" },
-            { version: "0.6.0" },
-        ],
+        compilers: [{ version: "0.8.20" }],
     },
 
     gasReporter: {
@@ -51,25 +49,41 @@ module.exports = {
         //token: "ETH",
     },
     etherscan: {
-        apiKey: ETHERSCAN_API_KEY,
-        timeout: 600000,
+        apiKey: {
+            scrollSepolia: SCROLLSCAN_API_KEY,
+        },
+        customChains: [
+            {
+                network: "scrollSepolia",
+                chainId: 534351,
+                urls: {
+                    apiURL: "https://sepolia-blockscout.scroll.io/api",
+                    browserURL: "https://sepolia-blockscout.scroll.io/",
+                },
+            },
+        ],
     },
     namedAccounts: {
         deployer: {
             default: 0,
             31337: 0,
+            534351: 0,
         },
         admin: {
             default: 0,
+            534351: 0,
         },
         users: {
             default: 1,
+            534351: 0,
         },
         advertiser: {
             default: 2,
+            534351: 0,
         },
         platformer: {
             default: 3,
+            534351: 0,
         },
     },
     mocha: {

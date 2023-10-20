@@ -1,18 +1,21 @@
 const { network, ethers } = require("hardhat")
-const { developmentChains } = require("../helper-hardhat-config")
+const { networkConfig, developmentChains } = require("../helper-hardhat-config")
 const { verify } = require("../utils/verify")
+
 module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deploy, log } = deployments
-    const { deployer, admin } = await getNamedAccounts()
+    const { deployer, admin, platformer } = await getNamedAccounts()
 
     const chainId = network.config.chainId
 
     log("----------------------------------------------------")
+    const vidToken = await ethers.getContract("VIDToken", deployer)
+    const tokenAddress = vidToken.target
 
-    const args = [admin]
+    const args = [tokenAddress]
 
-    const gate = await deploy("Gate", {
-        from: deployer,
+    const tokenMarketplace = await deploy("TokenMarketplace", {
+        from: platformer,
         args: args,
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
@@ -21,13 +24,13 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     log("----------------------------------------------------")
     if (
         !developmentChains.includes(network.name) &&
-        process.env.ETHERSCAN_API_KEY
+        process.env.SCROLLSCAN_API_KEY
     ) {
-        log("Verifying on Etherscan")
+        log("Verifying on Scrollscan")
 
-        await verify(gate.address, args)
+        await verify(tokenMarketplace.address, args)
     }
     log("------------------------------------")
 }
 
-module.exports.tags = ["all", "gate", "main"]
+module.exports.tags = ["all", "platform", "main"]
