@@ -90,7 +90,7 @@ The value flow process in the system can be divided into the value creation proc
 
 Token generation and distribution
 
-![image-20231024105354781](imgs/image-20231024105354781.png)
+![image-20231024115904408](imgs/image-20231024115904408.png)
 
 1. When the platform intends to convert user traffic into tokens, it needs to send the request to play a video to the Gate Network
 2. Gate Network, based on the platform's on-chain revenue sharing ratio (such as., 7:3 between users and the platform), mints a specific quantity of tokens for both the video creator and the platform. It then sends this signed transaction and the original video playing request to the platform server.
